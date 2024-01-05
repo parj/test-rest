@@ -1,0 +1,18 @@
+// orders_service.proto
+
+syntax = "proto3";
+
+package io.github.parj.testrest.grpc;
+
+option java_multiple_files = true;
+option java_package = "io.github.parj.testrest.grpc";
+
+import "orders.proto";
+
+service OrdersServiceImpl {
+  rpc StreamOrders(StreamOrdersRequest) returns (stream Orders);
+}
+
+message StreamOrdersRequest {
+  // You can add request parameters if needed
+}

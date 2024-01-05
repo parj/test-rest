@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.github.parj.testrest.grpc.netty</groupId>
+  <artifactId>netty-grpc-server-test</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>netty-grpc-server-test</name>
+  <url>https://github.com/parj/test-rest</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <io.grpc.version>1.60.1</io.grpc.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.trino</groupId>
+      <artifactId>trino-jdbc</artifactId>
+      <version>435</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-all</artifactId>
+      <version>4.1.104.Final</version> <!-- Replace with the latest version available -->
+
+      <!-- Note: Netty uses SLF4J for logging, you may need to include an SLF4J binding -->
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>2.0.10</version>
+    </dependency>
+    <!-- Dependencies for grpc -->
+    <!-- If the grpc-stubs is not found, head to the grpc-stubs folder and run ./mvnw clean install -->
+    <dependency>
+      <groupId>io.github.parj.testrest.grpc</groupId>
+      <artifactId>grpc-stubs</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-netty-shaded</artifactId>
+      <version>${io.grpc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-protobuf</artifactId>
+      <version>${io.grpc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-stub</artifactId>
+      <version>${io.grpc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-services</artifactId>
+      <version>${io.grpc.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.1</version>
+        <configuration>
+          <mainClass>io.github.parj.testrest.grpc.netty.App</mainClass>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>3.4.0</version>
+        <configuration>
+          <to>
+            <image>${project.groupId}.${project.name}</image>
+          </to>
+          <from>
+            <!-- Uncomment for arm -->
+<!--            <platforms>-->
+<!--              <platform>-->
+<!--                <architecture>arm64</architecture>-->
+<!--                <os>linux</os>-->
+<!--              </platform>-->
+<!--            </platforms>-->
+          </from>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.6.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <archive>
+                <manifest>
+                  <mainClass>
+                    io.github.parj.testrest.grpc.netty.App
+                  </mainClass>
+                </manifest>
+              </archive>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

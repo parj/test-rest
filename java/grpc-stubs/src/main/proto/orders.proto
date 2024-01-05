@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package io.github.parj.testrest.grpc;
+
+option java_multiple_files = true;
+option java_package = "io.github.parj.testrest.grpc";
+
+message Orders {
+  int32 orderkey = 1;
+  int32 custkey = 2;
+  string orderstatus = 3;
+  double totalprice = 4;
+  string orderdate = 5;
+  string orderpriority = 6;
+  string clerk = 7;
+  int32 shippriority = 8;
+  string comment = 9;
+}

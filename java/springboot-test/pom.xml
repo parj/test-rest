@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.1</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>io.gihub.parj</groupId>
+	<artifactId>springboot-test</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>springboot-test</name>
+	<description>Testing rest application against Trino's tpch</description>
+	<properties>
+		<java.version>17</java.version>
+		<log4j2.version>2.22.1</log4j2.version>
+		<repackage.classifier/>
+		<spring-native.version>0.12.2</spring-native.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<!-- Disable for swapping out embedded tomcat -->
+			<!-- <exclusions>
+				<exclusion>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions> -->
+		</dependency>
+
+		<!-- Enable for testing with undertow -->
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jetty</artifactId>
+		</dependency> -->
+		<!-- Uncomment for HTTP/2 -->
+		<!-- <dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-alpn-java-server</artifactId>
+			<version>12.0.5</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.jetty.http2</groupId>
+			<artifactId>jetty-http2-server</artifactId>
+			<version>12.0.5</version>
+		</dependency> -->
+		<dependency>
+			<groupId>net.devh</groupId>
+			<artifactId>grpc-spring-boot-starter</artifactId>
+			<version>2.15.0.RELEASE</version>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>io.github.lognet</groupId>-->
+<!--			<artifactId>grpc-spring-boot-starter</artifactId>-->
+<!--			<version>5.1.5</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.trino</groupId>
+			<artifactId>trino-jdbc</artifactId>
+			<version>435</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.github.parj.testrest.grpc</groupId>
+			<artifactId>grpc-stubs</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<id>test</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.basedir}/target/generated-sources</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.0</version>
+				<configuration>
+					<to>
+						<image>test-rest-java</image>
+					</to>
+					<from>
+						<platforms>
+							<platform>
+								<architecture>arm64</architecture>
+								<os>linux</os>
+							</platform>
+						</platforms>
+					</from>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

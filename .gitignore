@@ -1,0 +1,14 @@
+**/build/*
+
+*.json
+*.tgz
+*.gz
+*.tar.gz
+
+**/target/*
+
+*.DS_Store
+
+*.iml
+*.ipr
+*.iws
